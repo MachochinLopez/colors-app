@@ -1,4 +1,6 @@
 import React from 'react';
+import PaletteMetaForm from './PaletteMetaForm';
+// Material UI
 import clsx from 'clsx';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import AppBar from '@material-ui/core/AppBar';
@@ -7,33 +9,37 @@ import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
 import Button from '@material-ui/core/Button';
-import { ValidatorForm, TextValidator } from 'react-material-ui-form-validator';
+
+import useStyles from './styles/PaletteFormNavStyles';
 
 export default function PaletteFormNav(props) {
-  const [paletteName, setPaletteName] = React.useState("");
+  const classes = useStyles();
+  const [open, setOpen] = React.useState("default");
 
-  React.useEffect(() => {
-    ValidatorForm.addValidationRule('isPaletteNameUnique', value => {
-      return props.palettes.every(palette => palette.paletteName.toLowerCase() !== value.toLowerCase());
-    });
-  });
+  const handleClickOpen = () => {
+    setOpen("paletteName");
+  };
+
+  const openEmojiDialog = () => {
+    setOpen("emoji");
+  };
+
+  const handleClose = () => {
+    setOpen("default");
+  };
 
   const handleDrawerOpen = () => {
     props.setOpen(true);
   };
 
-  const handlePaletteNameChange = event => {
-    setPaletteName(event.target.value);
-  }
- 
   return (
-    <div>
+    <div className={classes.root}>
       <CssBaseline />
       <AppBar
         position="fixed"
         color="default"
-        className={clsx(props.classes.appBar, {
-          [props.classes.appBarShift]: props.open,
+        className={clsx(classes.appBar, {
+          [classes.appBarShift]: props.open,
         })}
       >
         <Toolbar>
@@ -42,33 +48,40 @@ export default function PaletteFormNav(props) {
             aria-label="open drawer"
             onClick={handleDrawerOpen}
             edge="start"
-            className={clsx(props.classes.menuButton, props.open && props.classes.hide)}
+            className={clsx(classes.menuButton, props.open && classes.hide)}
           >
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" noWrap>
-            Persistent drawer
+            Create A Palette
           </Typography>
-          <ValidatorForm onSubmit={() => props.savePalette(paletteName)}>
-            <TextValidator 
-              value={paletteName}
-              name="paletteName"
-              label="Palette Name"
-              onChange={handlePaletteNameChange}
-              validators={["required", "isPaletteNameUnique"]}
-              errorMessages={["Enter a Palette Name", "Palette Name Already Taken"]}
-            />
-            <Button
-              variant="contained"
-              color="primary"
-              type="submit"
-            >
-              Save Palette
-            </Button>
-            <Button variant="contained" color="secondary" onClick={() => {props.history.push('/')}}>Go Back</Button>
-          </ValidatorForm>
         </Toolbar>
+        <div className={classes.navBtns}>
+          <Button
+            className={classes.button}
+            variant="contained" 
+            color="secondary" 
+            onClick={() => {props.history.push('/')}}
+          >
+            Go Back
+          </Button>
+          <Button
+            className={classes.button}
+            variant="contained" 
+            color="primary" 
+            onClick={handleClickOpen}
+          >
+            Save
+          </Button>
+        </div>
       </AppBar>
+      <PaletteMetaForm
+        openEmojiDialog={openEmojiDialog}
+        handleClose={handleClose}
+        open={open}
+        palettes={props.palettes}
+        savePalette={props.savePalette}
+      />
     </div>
   );
 }

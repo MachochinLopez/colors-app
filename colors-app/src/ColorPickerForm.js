@@ -5,8 +5,10 @@ import Button from '@material-ui/core/Button';
 import { ChromePicker } from 'react-color';
 // Form Validator
 import { ValidatorForm, TextValidator } from 'react-material-ui-form-validator';
+import styles from './styles/ColorPickerFormStyles';
+import { withStyles } from '@material-ui/core/styles';
 
-export default function ColorPickerForm(props) {
+export default withStyles(styles)(function ColorPickerForm(props) {
   
   /***************
    *    STATE    *
@@ -57,38 +59,43 @@ export default function ColorPickerForm(props) {
    ****************/
 
   return (
-    <div>
+    <div className={props.classes.root}>
       <ChromePicker 
-          color={background}
-          onChangeComplete={handleChangeComplete}
+        color={background}
+        onChangeComplete={handleChangeComplete}
+        className={props.classes.picker}
+      />
+      <ValidatorForm onSubmit={handleSubmit}>
+        <TextValidator
+          className={props.classes.colorNameInput}
+          value={colorName}
+          name="colorName"
+          label="Color Name"
+          onChange={handleColorNameChange}
+          validators={[
+            'required',
+            'isColorNameUnique',
+            'isColorUnique'
+          ]}
+          errorMessages={[
+            'Enter a color name',
+            'Color name must be unique',
+            'Color already used'
+          ]}
+          variant="filled"
+          margin="normal"
         />
-        <ValidatorForm onSubmit={handleSubmit}>
-          <TextValidator
-            value={colorName}
-            name="colorName"
-            label="Color Name"
-            onChange={handleColorNameChange}
-            validators={[
-              'required',
-              'isColorNameUnique',
-              'isColorUnique'
-            ]}
-            errorMessages={[
-              'Enter a color name',
-              'Color name must be unique',
-              'Color already used'
-            ]}
-          />
-          <Button
-            variant="contained"
-            color="primary"
-            style={{backgroundColor: props.paletteIsFull ? "grey ": background}}
-            type="submit"
-            disabled={props.paletteIsFull}
-          >
-            {props.paletteIsFull ? "Palette Full" : "Add Color"}
-          </Button>
-        </ValidatorForm>
+        <Button
+          variant="contained"
+          color="primary"
+          style={{backgroundColor: props.paletteIsFull ? "grey ": background}}
+          type="submit"
+          disabled={props.paletteIsFull}
+          className={props.classes.addColor}
+        >
+          {props.paletteIsFull ? "Palette Full" : "Add Color"}
+        </Button>
+      </ValidatorForm>
     </div>
   );
-}
+});
