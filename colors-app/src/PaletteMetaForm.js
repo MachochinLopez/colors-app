@@ -45,14 +45,15 @@ export default function PaletteMetaForm(props) {
               Please enter a name for your new beautiful palette. Make sure it's unique!
             </DialogContentText>
             <TextValidator 
-              value={paletteName}
-              name="paletteName"
-              label="Palette Name"
+              autoFocus
+              errorMessages={["Enter a Palette Name", "Palette Name Already Taken"]}
               fullWidth
+              label="Palette Name"
               margin="normal"
+              name="paletteName"
               onChange={handlePaletteNameChange}
               validators={["required", "isPaletteNameUnique"]}
-              errorMessages={["Enter a Palette Name", "Palette Name Already Taken"]}
+              value={paletteName}
             />
           </DialogContent>
           <DialogActions>

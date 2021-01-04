@@ -8,17 +8,26 @@ import { Route, Switch } from 'react-router-dom';
 import { generatePalette } from './colorHelpers';
 
 function App() {
-  const [palettes, setPalettes] = React.useState(seedColors);
+  const savedPalettes = JSON.parse(window.localStorage.getItem("palettes"));
+  const [palettes, setPalettes] = React.useState(savedPalettes || seedColors);
   
   const findPalette = id => {
     return palettes.find(palette => {
       return palette.id === id;
     });
   };
-  
+
   const savePalette = newPalette => {
     setPalettes([...palettes, newPalette]);
   };
+
+  const deletePalette = id => {
+    setPalettes(palettes.filter(palette => palette.id !== id));
+  };
+
+  React.useEffect(() => {
+    window.localStorage.setItem("palettes", JSON.stringify(palettes));
+  }, [palettes]);
 
   return (
     <Switch>
@@ -49,12 +58,9 @@ function App() {
       <Route 
         exact
         path="/"
-        render={routeProps => <PaletteList palettes={palettes} {...routeProps} />}
+        render={routeProps => <PaletteList deletePalette={deletePalette} palettes={palettes} {...routeProps} />}
       />
     </Switch>
-    // <div>
-    //   <Palette palette={generatePalette(seedColors[4])} />
-    // </div>
   );
 }
 
