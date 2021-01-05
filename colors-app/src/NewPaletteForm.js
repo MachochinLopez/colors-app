@@ -20,7 +20,7 @@ export default function NewPaletteForm(props) {
     maxColors: 20
   };
   const [colors, setColors] = React.useState(props.palettes[0].colors);
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = React.useState(true);
   const paletteIsFull = colors.length >= defaultProps.maxColors;
 
   /*******************
