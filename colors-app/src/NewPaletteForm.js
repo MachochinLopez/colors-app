@@ -3,6 +3,7 @@ import DraggableColorList from './DraggableColorList';
 import ColorPickerForm from './ColorPickerForm';
 import PaletteFormNav from './PaletteFormNav';
 import useStyles, { drawerWidth } from './styles/NewPaletteFormStyles';
+import seedColors from './seedColors';
 // Material UI
 import clsx from 'clsx';
 import Drawer from '@material-ui/core/Drawer';
@@ -19,7 +20,7 @@ export default function NewPaletteForm(props) {
   const defaultProps = {
     maxColors: 20
   };
-  const [colors, setColors] = React.useState(props.palettes[0].colors);
+  const [colors, setColors] = React.useState(seedColors[0].colors);
   const [open, setOpen] = React.useState(true);
   const paletteIsFull = colors.length >= defaultProps.maxColors;
 
@@ -33,8 +34,15 @@ export default function NewPaletteForm(props) {
 
   const addRandomColor = () => {
     const allColors = props.palettes.map(palette => palette.colors).flat();
-    const rand = Math.floor(Math.random() * allColors.length);
-    const randomColor = allColors[rand];
+    let rand, randomColor;
+    let isDuplicateColor = true;
+    while(isDuplicateColor) {
+      rand = Math.floor(Math.random() * allColors.length);
+      randomColor = allColors[rand];
+      isDuplicateColor = colors.some(color => {
+        return color.name === randomColor.name;
+      });
+    }
     setColors([...colors, randomColor]);
   };
 

@@ -23,6 +23,8 @@ export default function PaletteMetaForm(props) {
   };
 
   const selectEmoji = emoji => {
+    props.handleClose();
+    
     const newPalette = {
       paletteName,
       emoji: emoji.native

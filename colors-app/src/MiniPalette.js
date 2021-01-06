@@ -1,40 +1,47 @@
-import React from 'react';
+import React, { PureComponent } from 'react';
 import { withStyles } from '@material-ui/styles';
 import styles from './styles/MiniPaletteStyles';
 import DeleteIcon from '@material-ui/icons/Delete'
 
-function MiniPalette(props) {
-  const { classes, colors, emoji, handleClick, id, paletteName } = props;
-  const miniColorBoxes = colors.map(color => {
-    return (
-    <div 
-      className={classes.miniColor}
-      style={{ backgroundColor: color.color }}
-      key={color.name}
-    />);
-  });
+class MiniPalette extends PureComponent {
+  constructor(props) {
+    super(props);
+    this.deletePalette = this.deletePalette.bind(this);
+  }
 
-  const deletePalette = (e) => {
+  deletePalette(e) {
     e.stopPropagation();
-    props.openDialog(id);
+    this.props.openDialog(this.props.id);
+  }
+
+  render() {
+    const { classes, colors, emoji, handleClick, id, paletteName } = this.props;
+    const miniColorBoxes = colors.map(color => {
+      return (
+      <div 
+        className={classes.miniColor}
+        style={{ backgroundColor: color.color }}
+        key={color.name}
+      />);
+    });
+
+    return (
+      <div className={classes.root} onClick={() => handleClick(id)}>
+        <div className={classes.delete}>
+        <DeleteIcon
+          className={classes.deleteIcon}
+          onClick={this.deletePalette}
+        />
+        </div>
+        <div className={classes.colors}>
+          {miniColorBoxes}
+        </div>
+        <div className={classes.title}>
+          {paletteName} <span className={classes.emoji}>{emoji}</span>
+        </div>
+      </div>
+    )
   };
-  
-  return (
-    <div className={classes.root} onClick={handleClick}>
-      <div className={classes.delete}>
-      <DeleteIcon
-        className={classes.deleteIcon}
-        onClick={deletePalette}
-      />
-      </div>
-      <div className={classes.colors}>
-        {miniColorBoxes}
-      </div>
-      <div className={classes.title}>
-        {paletteName} <span className={classes.emoji}>{emoji}</span>
-      </div>
-    </div>
-  )
 }
 
 export default withStyles(styles)(MiniPalette);

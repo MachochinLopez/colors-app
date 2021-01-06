@@ -1,21 +1,21 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import MiniPalette from './MiniPalette';
 import { withStyles } from '@material-ui/styles';
+import MiniPalette from './MiniPalette';
 import styles from './styles/PaletteListStyles';
 // Transition.
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
 // Dialog
+import { blue, red } from '@material-ui/core/colors';
+import Avatar from '@material-ui/core/Avatar';
+import CheckIcon from '@material-ui/icons/Check';
+import CloseIcon from '@material-ui/icons/Close';
 import Dialog from '@material-ui/core/Dialog';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemAvatar from '@material-ui/core/ListItemAvatar';
-import Avatar from '@material-ui/core/Avatar';
 import ListItemText from '@material-ui/core/ListItemText';
-import CheckIcon from '@material-ui/icons/Check';
-import CloseIcon from '@material-ui/icons/Close';
-import { blue, red } from '@material-ui/core/colors';
 
 class PaletteList extends Component {
   constructor(props) {
@@ -63,14 +63,14 @@ class PaletteList extends Component {
                   <CSSTransition
                     key={palette.id}
                     classNames="fade"
-                    timeout={500}
+                    timeout={250}
                   >
                     <MiniPalette 
                       key={palette.id} 
                       {...palette}
                       id={palette.id}
                       openDialog={this.openDialog} 
-                      handleClick={() => this.goToPalette(palette.id)} 
+                      handleClick={this.goToPalette} 
                     />
                   </CSSTransition>
                 );

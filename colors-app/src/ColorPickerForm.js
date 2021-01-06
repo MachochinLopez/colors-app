@@ -65,7 +65,7 @@ export default withStyles(styles)(function ColorPickerForm(props) {
         onChangeComplete={handleChangeComplete}
         className={props.classes.picker}
       />
-      <ValidatorForm onSubmit={handleSubmit}>
+      <ValidatorForm onSubmit={handleSubmit} instantValidate={false}>
         <TextValidator
           className={props.classes.colorNameInput}
           value={colorName}

@@ -5,7 +5,10 @@ const styles = {
     display: "flex",
     alignItems: "center",
     justifyContent: "flex-start",
-    height: "6vh"
+    height: "6vh",
+    [sizes.down("xs")]: {
+      marginLeft: "1rem"
+    }
   },
   logo: {
     marginRight: "15px",
@@ -26,7 +29,7 @@ const styles = {
   },
   slider: {
     width: "340px",
-    margin: "0 auto",
+    margin: "0 1rem",
     display: "inline-block",
     "& .rc-slider-rail": {
       height: "8px"
@@ -42,7 +45,7 @@ const styles = {
     "& .rc-slider-track": {
       backgroundColor: "transparent"
     },
-    [sizes.down("md")]: {
+    [sizes.down("sm")]: {
       width: "150px"
     },
   },
